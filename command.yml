@@ -1,0 +1,13 @@
+---
+- hosts: webserver
+  gather_facts: no
+  tasks:
+    - name: command module
+      command: rm shell.txt
+      args:
+        chdir: /home/ansible
+      register: output
+      failed_when: "'Permision denied' in output.stderr"  
+
+        
+  

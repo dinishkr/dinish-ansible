@@ -1,0 +1,16 @@
+---
+- hosts: webserver
+  become: yes
+  become_user: root
+  gather_facts: no
+  tasks:
+   - name: install webserver
+     yum: pkg=httpd state=latest
+   - name: Verify service status
+     shell: systemctl status httpd
+     register: result
+     until: result.stdout.find("active (running)")  != -1
+     retries: 10
+     delay: 5
+   - debug: var=result  
+   

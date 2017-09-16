@@ -1,0 +1,5 @@
+- hosts: webserver
+  tasks:
+  - name: install lynx
+    fetch: src=/home/ansible/installed.log dest=/home/ansible/installlog-{{ ansible_hostname }} flat=yes
+  

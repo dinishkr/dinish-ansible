@@ -1,0 +1,21 @@
+---
+- hosts: webserver
+  gather_facts: no
+  become: yes
+  vars:
+    playbook_version: 1.0
+  vars_files:
+    - conf/copyright.yml
+    - conf/webdefaults.yml
+  vars_prompt:
+    - name: pkg_name
+      prompt: Name Package 
+  tasks:
+    - name: install webserver
+      action: yum name=httpd state=installed
+      notify: Restart Httpd
+    - name: install lynx browser
+      action: yum name={{ pkg_name }} state=installed
+  handlers:
+    - name: Restart Httpd
+      action: service name=httpd stste=restarted 

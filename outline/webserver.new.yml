@@ -1,0 +1,25 @@
+---
+- hosts: webserver
+  user: ansible
+  sudo: yes
+  gather_facts: no
+  tasks:
+  - name: date/time stamp when playbook starts
+    command: /usr/bin/date
+    register: start_date
+  - debug: var=start_date
+  - name: install http webserver
+    yum: pkg=httpd state=latest
+    notify: start HTTPD
+  - name: verify that web service is running
+    command: systemctl status httpd
+    register: result
+    ignore_errors: yes
+  - debug: var=result
+  - name: install telnet
+    yum: pkg=telnet state=latest
+  handlers:
+   - name: start HTTPD
+     service: name=httpd state=restarted
+
+

@@ -1,0 +1,11 @@
+--- # When Loop
+- hosts: webserver,ubuntu
+  become: yes
+  become_user: root
+  tasks:
+    - name: Install apache in ubuntu
+      command: apt-get -y install apache2
+      when: ansible_os_family == "Debian"
+    - name: Install apache in redhat
+      command: yum install httpd -y
+      when: ansible_os_family == "RedHat"

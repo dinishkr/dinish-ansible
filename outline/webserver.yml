@@ -1,0 +1,35 @@
+--- # outline to playbook transalation
+- hosts: webserver
+  user:  ansible 
+  sudo: yes
+  gather_facts: no
+  tasks:
+  - name: date/time when playbook starts
+    command: /usr/bin/date
+    register: start_time
+  - debug: var=start_time
+  - name: install apache
+    yum: pkg=httpd state=latest
+    notify:
+      -  start httpd
+  - name: verify webservice is running
+    command: systemctl status httpd
+    register: http status
+  - debug:
+      var: http status
+    ignore_errors: yes
+  - name: install client service telent
+    yum: name=telnet state=latest
+    register: telnet_install
+  - debug: var=telnet_install
+  - name: install client service lynx
+    yum: name=lynx state=latest
+    register: install_lynx
+  - debug: var=install_lynx 
+  - name: log all packages intsalled on system
+    raw: yum list installed > /home/ansible/installed.log
+  - name: date/time when playbook ends
+    raw: /usr/bin/date  > /home/ansible/playbookend.log
+  handlers:
+   - name: start httpd
+     service: name=httpd state=started

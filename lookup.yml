@@ -1,0 +1,8 @@
+--- 
+- hosts: webserver
+  user: ansible
+  sudo: yes
+  vars:
+    contents: "{{lookup ('file','/etc/foo.txt')}}"
+  tasks:
+   - debug: msg="the value is {{contents}}"
